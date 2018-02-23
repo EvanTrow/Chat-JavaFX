@@ -80,6 +80,7 @@ public class ChatController {
 				msgFld.setDisable(false);
 				sendBtn.setDisable(false);
 				fileBtn.setDisable(false);
+				client.sendMessage(new ChatMessage(ChatMessage.WHOISIN, ""));
 			} else {
 				connected = false;
 				connectedLabel.setText("Disconnected");
@@ -149,7 +150,7 @@ public class ChatController {
 	
     @FXML
     void exportBtnPress(ActionEvent event) throws IOException {
-    		FileChooser fileChooser = new FileChooser();
+		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save File");
 		if(isWindows()) {
 			File userDirectory = new File(System.getProperty("user.home")+"\\Downloads");
@@ -170,14 +171,13 @@ public class ChatController {
 		    	catch (IOException e)
 		    	{
 		    	    System.out.println("Exception ");
-		        Notifications.create().title("Chat: "+server+":"+port).text("An ERROR occurred while saving the file").showError();
-
+		    	    Notifications.create().title("Chat: "+server+":"+port).text("An ERROR occurred while saving the file").showError();
 		    	}
 		    	finally
 		    	{
 		    	    out.close();
-			    ImageView icon = new ImageView(new Image(this.getClass().getResourceAsStream("res/icon64.png")));
-		        Notifications.create().title("Chat: "+server+":"+port).text("File saved: " + savedFile.toString()).graphic(icon).show();
+				    ImageView icon = new ImageView(new Image(this.getClass().getResourceAsStream("res/icon64.png")));
+			        Notifications.create().title("Chat: "+server+":"+port).text("File saved: " + savedFile.toString()).graphic(icon).show();
 		    	}
 		}
 
