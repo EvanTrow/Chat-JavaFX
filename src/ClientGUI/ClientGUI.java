@@ -27,6 +27,7 @@ public class ClientGUI extends Application {
         
         serverStage.setScene(scene);
         serverStage.setTitle("Chat");
+        serverStage.setResizable(false);
         serverStage.show();
     	serverStage.getIcons().add(new Image(this.getClass().getResourceAsStream("res/icon64.png")));
         

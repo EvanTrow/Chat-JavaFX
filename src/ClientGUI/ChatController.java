@@ -117,11 +117,15 @@ public class ChatController {
 
     @FXML
     void FilePress(ActionEvent event) {
-	    	FileChooser fileChooser = new FileChooser();
-			fileChooser.setTitle("Select File");
-	    	File selectedFile = fileChooser.showOpenDialog(null);
-	    	
-	    	if (selectedFile != null) {
+    	FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select File < 5mb");
+    	File selectedFile = fileChooser.showOpenDialog(null);
+    	
+    	if (selectedFile != null) {
+    		if(selectedFile.length()>5242880) { // limit file to 5mb
+    			ImageView icon = new ImageView(new Image(this.getClass().getResourceAsStream("res/icon64.png")));
+		        Notifications.create().title("Chat: "+server+":"+port).text("File selected is to large. Select a file less than 5mb").graphic(icon).show();
+    		} else {
 			    ImageView icon = new ImageView(new Image(this.getClass().getResourceAsStream("res/icon64.png")));
 		        Notifications.create().title("Chat: "+server+":"+port).text("File selected: " + selectedFile.getName()).graphic(icon).show();
 		        try {
@@ -129,7 +133,8 @@ public class ChatController {
 				} catch (IOException e1) {
 					Notifications.create().title("Chat: "+server+":"+port).text("Error Sending File: " + selectedFile.getName()).showError();
 				}
-	    	}
+    		}
+    	}
     }
 
     @FXML
