@@ -15,6 +15,11 @@
    <children>
       <AnchorPane layoutY="-3.0" prefHeight="400.0" prefWidth="750.0" AnchorPane.bottomAnchor="-4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
          <children>
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="200.0" layoutX="-6.0" layoutY="-3.0" prefHeight="413.0" prefWidth="200.0">
+               <effect>
+                  <DropShadow height="0.0" offsetX="10.0" radius="10.0625" width="42.25" />
+               </effect>
+            </JFXDrawer>
             <JFXTextArea fx:id="MsgArea" editable="false" focusColor="#d8dae300" layoutX="7.0" layoutY="53.0" prefHeight="302.0" prefWidth="524.0" unFocusColor="#ffffff00" wrapText="true">
                <font>
                   <Font name="Tahoma" size="13.0" />
@@ -35,11 +40,6 @@
             <JFXButton fx:id="exportBtn" layoutX="669.0" layoutY="361.0" onAction="#exportBtnPress" prefHeight="37.0" prefWidth="75.0" ripplerFill="WHITE" style="-fx-background-color: #2196F3;" text="Export" textFill="WHITE" />
             <JFXButton fx:id="disconnectBtn" layoutX="536.0" layoutY="10.0" onAction="#DisconnectPress" prefHeight="35.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2196F3;" text="Disconnect" textFill="WHITE" />
             <Text fx:id="connectedLabel" layoutX="333.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="RIGHT" wrappingWidth="197.21875" />
-            <JFXDrawer fx:id="drawer" defaultDrawerSize="200.0" layoutX="-6.0" layoutY="-3.0" prefHeight="413.0" prefWidth="200.0">
-               <effect>
-                  <DropShadow height="0.0" offsetX="10.0" radius="10.0625" width="42.25" />
-               </effect>
-            </JFXDrawer>
             <JFXHamburger fx:id="hamburger" layoutX="696.0" layoutY="10.0" prefHeight="34.0" prefWidth="41.0" />
          </children>
       </AnchorPane>

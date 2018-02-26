@@ -81,7 +81,7 @@ public class ChatController {
     private JFXHamburger hamburger;
     
     public void setSideBar() {
-    	
+    
     	HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
         transition.setRate(-1);
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED,(e)->{
@@ -90,9 +90,13 @@ public class ChatController {
             
             if(drawer.isShown())
             {
-                drawer.close();
-            }else
-                drawer.open();
+            	drawer.close();
+            	drawer.toBack();
+            }else {
+            	drawer.toFront();
+            	drawer.open();
+            }
+                
         });
     
     	try {
