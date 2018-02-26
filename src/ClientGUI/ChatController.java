@@ -11,16 +11,23 @@ import org.apache.commons.io.FileUtils;
 import org.controlsfx.control.Notifications;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import com.mysql.fabric.FabricCommunicationException;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Box;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
@@ -61,16 +68,49 @@ public class ChatController {
     private JFXButton disconnectBtn;
 
     @FXML
-    private JFXButton settingsBtn;
+    private JFXButton open;
 
     @FXML
     private Text connectedLabel;
 
+
+    @FXML
+    private JFXDrawer drawer;
+    
+    @FXML
+    private JFXHamburger hamburger;
+    
+    public void setSideBar() {
+    	
+    	HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
+        transition.setRate(-1);
+        hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED,(e)->{
+            transition.setRate(transition.getRate()*-1);
+            transition.play();
+            
+            if(drawer.isShown())
+            {
+                drawer.close();
+            }else
+                drawer.open();
+        });
+    
+    	try {
+    		AnchorPane box = FXMLLoader.load(getClass().getResource("gui/Btns.fxml"));
+			drawer.setSidePane(box);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
 	@FXML
 	public void initialize() {
+		setSideBar();
 		server = prefs.get("server_address", "");
 		port = Integer.parseInt(prefs.get("server_port", ""));
 		username = prefs.get("username", "");
+		
 		
 		try {
 			client = new Client(server, port, username, this);
@@ -98,6 +138,8 @@ public class ChatController {
 			disconnectBtn.setText("Connect");
 		}
 	}
+	
+	
 
     @FXML
     void DisconnectPress(ActionEvent event) {
