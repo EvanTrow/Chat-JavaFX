@@ -87,13 +87,12 @@ public class ChatController {
         hamburger.addEventHandler(MouseEvent.MOUSE_PRESSED,(e)->{
             transition.setRate(transition.getRate()*-1);
             transition.play();
-            
+
+        		drawer.toFront();
             if(drawer.isShown())
             {
             	drawer.close();
-            	drawer.toBack();
             }else {
-            	drawer.toFront();
             	drawer.open();
             }
                 
