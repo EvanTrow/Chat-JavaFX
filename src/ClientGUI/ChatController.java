@@ -4,7 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.prefs.Preferences;
 
 import org.apache.commons.io.FileUtils;
@@ -35,7 +35,7 @@ public class ChatController {
 	
 	private String server, username;
 	private int port;
-	private boolean connected;
+	public boolean connected;
 	
 	private Client client;
 	
@@ -125,6 +125,7 @@ public class ChatController {
 				sendBtn.setDisable(false);
 				fileBtn.setDisable(false);
 				client.sendMessage(new ChatMessage(ChatMessage.WHOISIN, ""));
+				getMsgWhileOffline();
 			} else {
 				connected = false;
 				connectedLabel.setText("Disconnected");
@@ -143,7 +144,20 @@ public class ChatController {
 		}
 	}
 	
-	
+	public void disconnect() {
+		if(connected) {
+			client.sendMessage(new ChatMessage(ChatMessage.LOGOUT, ""));
+			disconnectBtn.setText("Connect");
+			msgFld.setDisable(true);
+			sendBtn.setDisable(true);
+			fileBtn.setDisable(true);
+			connectedLabel.setText("Disconnected");
+			UserList.getItems().clear();
+			connected = false;
+		} else if (!connected) {
+			reconnectToServer();
+		}
+	}
 
     @FXML
     void DisconnectPress(ActionEvent event) {
@@ -385,6 +399,45 @@ public class ChatController {
         		UserList.getItems().clear();
             }
         });
+	}
+	
+	private void getMsgWhileOffline() throws ClassNotFoundException {
+	   try{
+	      //STEP 2: Register JDBC driver
+	      Class.forName("com.mysql.jdbc.Driver");
+
+	      //STEP 3: Open a connection
+	      System.out.println("Connecting to a selected database...");
+	      Connection con=DriverManager.getConnection("jdbc:mysql://trowlink.com:3306/JavaChat?autoReconnect=true&useSSL=false","chat","7xsVuPeF1rCQOeo2");
+	      System.out.println("Connected database successfully...");
+	      
+	      //STEP 4: Execute a query
+	      System.out.println("Creating statement...");
+	      Statement stmt = con.createStatement();
+
+	      //String sql = "SELECT * FROM "+getChatRmName(port);
+	      String sql = "SELECT * FROM ( SELECT * FROM "+getChatRmName(port)+" ORDER BY id DESC LIMIT 15 ) sub ORDER BY id ASC";
+	      ResultSet rs = stmt.executeQuery(sql);
+	      //STEP 5: Extract data from result set
+	      while(rs.next()){
+	         //Retrieve by column name
+	         String timedate = rs.getString("timestamp");
+	         String user = rs.getString("user");
+	         String msg = rs.getString("msg");
+
+	         //Display values
+	         MsgArea.appendText(timedate+" "+user+": "+msg+"\n");
+	      }
+	      rs.close();
+	   }catch(SQLException se){
+	      //Handle errors for JDBC
+	      se.printStackTrace();
+	   }
+	}
+	private String getChatRmName(int p) {
+		p = port-7999;
+		String formattedNumber = String.format("%03d", p);
+		return "C"+formattedNumber;
 	}
 	
 	@FXML

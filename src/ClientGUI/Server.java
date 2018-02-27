@@ -2,8 +2,15 @@ package ClientGUI;
 
 import java.io.*;
 import java.net.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
+import java.sql.*;
+
+import com.mysql.jdbc.PreparedStatement;
 
 /*
  * The server that can be run both as a console application or a GUI
@@ -133,24 +140,39 @@ public class Server {
 	 *  to broadcast a message to all Clients
 	 */
 	private synchronized void broadcast(String message) {
+		String dbUser = "-";
+		String dbMsg = "-";
+		
 		// add HH:mm:ss and \n to the message
 		String time = sdf.format(new Date());
 		String messageLf = time + " " + message + "\n";
 		// display message on console or GUI
 		if(!message.contains("ClintSendFile|")) {
+			
 			if(sg == null)
 				System.out.print(messageLf);
 			else
 				sg.appendRoom(messageLf);     // append in the room window
+
+			
+			String[] array = messageLf.split(":"); 
+			dbUser = array[2].substring(3);
+			dbMsg = array[3].trim();
 		} else {
 			String s = new String(messageLf);
 			String[] separatedMsg = s.split("\\|");
 			String userAndTime = separatedMsg[0];
 			
+			
 			if(sg == null)
 				System.out.println(userAndTime + "Sent File: " + separatedMsg[2]);
 			else
 				sg.appendEvent(userAndTime + "Sent File: " + separatedMsg[2] + "\n");
+			
+			dbUser = userAndTime.substring(9);
+			dbUser = dbUser.substring(0, dbUser.length() - 1);
+			dbUser = dbUser.substring(0, dbUser.length() - 1);
+			dbMsg = ("Sent File: " + separatedMsg[2]);
 			
 			for(int i = al.size(); --i >= 0;) {
 				ClientThread ct = al.get(i);
@@ -160,6 +182,8 @@ public class Server {
 					display("Disconnected Client " + ct.username + " removed from list.");
 				}
 			}
+			
+			
 		}
 		
 		// we loop in reverse order in case we would have to remove a Client
@@ -172,6 +196,31 @@ public class Server {
 				display("Disconnected Client " + ct.username + " removed from list.");
 			}
 		}
+		
+		saveMsgToDB(dbUser, dbMsg); // log to DB
+	}
+	
+	private void saveMsgToDB(String user, String msg) {
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con=DriverManager.getConnection("jdbc:mysql://trowlink.com:3306/JavaChat?autoReconnect=true&useSSL=false","chat","7xsVuPeF1rCQOeo2");
+			
+			Statement stmt = con.createStatement();
+
+			String sql = "INSERT INTO "+getChatRmName(port)+" (user, msg)" +
+	        "VALUES ('"+user+"','"+msg+"')";
+			stmt.executeUpdate(sql);
+			con.close();
+
+		}catch(Exception e1){ 
+			System.out.println(e1.getMessage());
+		}
+	}
+	
+	private String getChatRmName(int p) {
+		p = port-7999;
+		String formattedNumber = String.format("%03d", p);
+		return "C"+formattedNumber;
 	}
 
 	// for a client who logoff using the LOGOUT message

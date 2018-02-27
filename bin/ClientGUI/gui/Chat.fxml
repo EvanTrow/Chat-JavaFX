@@ -15,11 +15,7 @@
    <children>
       <AnchorPane layoutY="-3.0" prefHeight="400.0" prefWidth="750.0" AnchorPane.bottomAnchor="-4.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-3.0">
          <children>
-            <JFXDrawer fx:id="drawer" defaultDrawerSize="200.0" layoutX="-6.0" layoutY="-3.0" prefHeight="413.0" prefWidth="200.0">
-               <effect>
-                  <DropShadow height="0.0" offsetX="10.0" radius="10.0625" width="42.25" />
-               </effect>
-            </JFXDrawer>
+            <JFXDrawer fx:id="drawer" defaultDrawerSize="200.0" layoutX="-6.0" layoutY="-3.0" prefHeight="413.0" prefWidth="200.0"></JFXDrawer>
             <JFXTextArea fx:id="MsgArea" editable="false" focusColor="#d8dae300" layoutX="7.0" layoutY="53.0" prefHeight="302.0" prefWidth="524.0" unFocusColor="#ffffff00" wrapText="true">
                <font>
                   <Font name="Tahoma" size="13.0" />

@@ -14,7 +14,7 @@ import javafx.stage.WindowEvent;
 public class ClientGUI extends Application {
 	
 	private Stage serverStage;
-		
+			
     @Override
     public void start(Stage serverStage) throws Exception {
     	
