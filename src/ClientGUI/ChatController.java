@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.prefs.Preferences;
 
@@ -45,6 +46,9 @@ public class ChatController {
 	// detech OS
 	private static String OS = System.getProperty("os.name").toLowerCase();
 
+	@FXML
+    private JFXDrawer drawer;
+
     @FXML
     private JFXTextArea MsgArea;
 
@@ -57,28 +61,28 @@ public class ChatController {
     @FXML
     private JFXListView<String> UserList = new JFXListView<String>();
 
-
     @FXML
     private JFXButton fileBtn;
 
     @FXML
-    private JFXButton exportBtn;
+    private Text connectedLabel;
+
+    @FXML
+    private JFXHamburger hamburger;
+    @FXML
+    private URL location;
+
+    @FXML
+    private JFXButton settings;
 
     @FXML
     private JFXButton disconnectBtn;
 
     @FXML
-    private JFXButton open;
-
-    @FXML
-    private Text connectedLabel;
+    private JFXButton exportBtn;
 
 
-    @FXML
-    private JFXDrawer drawer;
-    
-    @FXML
-    private JFXHamburger hamburger;
+
     
     public void setSideBar() {
     
@@ -91,6 +95,9 @@ public class ChatController {
             if(drawer.isShown())
             {
             	drawer.close();
+            	for(int a = 0; a < 1000000; a++) {
+            		
+            	}
             	drawer.toBack();
             }else {
             	drawer.toFront();
@@ -146,7 +153,7 @@ public class ChatController {
 	
 
     @FXML
-    void DisconnectPress(ActionEvent event) {
+    		public void DisconnectPress(ActionEvent event) {
 		if(connected) {
 			client.sendMessage(new ChatMessage(ChatMessage.LOGOUT, ""));
 			disconnectBtn.setText("Connect");
