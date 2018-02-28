@@ -5,7 +5,9 @@ import com.jfoenix.controls.JFXButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+	
 public class BtnsController {
+	ChatController cont = new ChatController();
 	
 	private ChatController ChatController;
 
@@ -29,11 +31,13 @@ public class BtnsController {
     @FXML
     void disconnect(ActionEvent event) {
     		//ChatController.disconnect();
-    		if(ChatController.connected) {
+    	System.out.println(cont.connected);
+    		if(cont.connected) {
     			navDisconnectBtn.setText("Disconnect");
     		} else {
     			navDisconnectBtn.setText("Connect");
     		}
+
     }
 
     @FXML
