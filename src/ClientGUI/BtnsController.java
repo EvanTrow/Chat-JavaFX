@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 public class BtnsController {
 	ChatController cont = new ChatController();
 	
-	private ChatController ChatController;
+	private ChatController ClearController;
 
     @FXML
     private JFXButton navSettingsBtn;
@@ -24,7 +24,7 @@ public class BtnsController {
     private JFXButton navCloseBtn;
 
     @FXML
-    void closeNav(ActionEvent event) {
+    void clearNav(ActionEvent event) {
 
     }
 
